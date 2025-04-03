@@ -1,6 +1,6 @@
 # File Name : main.py
 # Student Name: Collin Baines / Connor Thomas
-# email: bainesct@mail.uc.edu
+# email: bainesct@mail.uc.edu / thoma5cg@mail.uc.edu
 # Assignment Number: Assignment 09
 # Due Date:   04/03/2025
 # Course #/Section:   4010-0
@@ -49,6 +49,21 @@ cursor = conn.cursor()
 cursor.execute('SELECT Brand FROM tBrand WHERE BrandID = 120')
 for row in cursor:
     brandName = row
+
+# Question 6
+cursor = conn.cursor()
+cursor.execute('''
+    SELECT TOP (100) PERCENT SUM(dbo.tTransactionDetail.QtyOfProduct) AS NumberOfItemsSold
+    FROM dbo.tTransactionDetail INNER JOIN
+    dbo.tTransaction ON dbo.tTransactionDetail.TransactionID = dbo.tTransaction.TransactionID WHERE 
+    (dbo.tTransaction.TransactionTypeID = 1) AND (dbo.tTransactionDetail.ProductID = 5)
+''')
+result = cursor.fetchone()
+numberOfItemsSold = result[0] if result and result[0] is not None else 0
+
+# Question 7
+sentence = f"The product '{Description}' made by {manufacturerName[0]} under the {brandName[0]} brand sold {numberOfItemsSold:,} units."
+print(sentence)
 
 
 
